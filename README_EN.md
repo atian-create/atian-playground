@@ -1,0 +1,49 @@
+# A Tian Playground
+
+English · [简体中文](README.md)
+
+A pixel-art amusement park that turns A Tian's real open-source Skills, websites, and interactive experiments into explorable attractions. Visitors can browse projects, open GitHub, and copy a ready-to-use prompt into an Agent.
+
+![A Tian Playground project map](docs/screenshots/playground-desktop.png)
+
+## What it does
+
+- Lists 38 verified public GitHub repositories.
+- Groups them into Visual Creation, Creator Content, Agent & Knowledge, and Interactive Websites & Games.
+- Maps every featured project to a related amusement-park attraction.
+- Provides a three-step tutorial, GitHub link, and Agent launch prompt for each project.
+- Animates walking visitors and swan boats.
+- Includes an open-source audit board for future releases.
+
+## Run locally
+
+```bash
+npm install
+npm run dev
+```
+
+Build a server-free standalone HTML file:
+
+```bash
+npm run build:local
+```
+
+Then open `阿甜游乐园.html` directly.
+
+## Copy into an Agent
+
+```text
+Please inspect and run this project: https://github.com/atian-create/atian-playground
+Read the README and project structure first. Then show me how to add one real project, map it to a relevant amusement-park attraction, and verify the local build.
+```
+
+## Project principles
+
+- Only real, finished, or already public projects are shown.
+- Attraction metaphors must match project capabilities.
+- Chinese UI copy is rendered in HTML instead of generated artwork.
+- The project does not read or upload private local files.
+
+## License
+
+[MIT](LICENSE)
