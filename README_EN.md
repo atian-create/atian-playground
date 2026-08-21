@@ -8,7 +8,7 @@ A pixel-art amusement park that turns A Tian's real open-source Skills, websites
 
 ## What it does
 
-- Lists 38 verified public GitHub repositories.
+- Lists 48 verified public GitHub repositories.
 - Groups them into Visual Creation, Creator Content, Agent & Knowledge, and Interactive Websites & Games.
 - Maps every featured project to a related amusement-park attraction.
 - Provides a three-step tutorial, GitHub link, and Agent launch prompt for each project.

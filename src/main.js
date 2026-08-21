@@ -80,8 +80,8 @@ app.innerHTML = `
     </header>
 
     <aside class="project-sidebar" aria-label="开源项目分类">
-      <div class="sidebar-heading"><span>项目总览</span><b>${projects.length}</b></div>
-      <p class="sidebar-intro">选择分区，再点开任一设施或项目。</p>
+      <div class="sidebar-heading"><span>四大游园分区</span><b>${projects.length}</b></div>
+      <p class="sidebar-intro">48 个开源项目已按用途分组。选择分区，再点开任一设施或项目。</p>
       <div class="project-groups" data-sidebar>${sidebarMarkup()}</div>
       <button class="audit-button" data-audit><span>🚧</span><span><b>施工公告牌</b><small>还有哪些值得开源？</small></span></button>
     </aside>
