@@ -17,6 +17,7 @@ const project = (repo, title, category, facility, description, homepage = '') =>
 })
 
 export const projects = [
+  project('food-sticker-demo', '美食贴纸生成器', 'visual', '美食贴纸照相馆', '把食物照片变成适合收藏和分享的可爱贴纸。'),
   project('knowledge-card-journal-skill', '知识卡片手帐', 'visual', '知识卡片旋转木马', '把截图、链接、笔记和逐字稿整理成统一的手帐知识卡片。'),
   project('solo-ai-paper-collage', 'AI 撕纸拼贴', 'visual', '撕纸拼贴工坊', '把一人公司和 AI 工作流变成有纸张触感的中文信息图。'),
   project('codex-dream-skin-studio', 'Codex 换肤工作室', 'visual', '换肤照相馆', '安装、切换、验证并安全恢复 Codex Desktop 主题。'),
@@ -27,6 +28,7 @@ export const projects = [
   project('wechat-knowledge-infographic-cover-skill', '知识信息图封面', 'visual', '知识海报剧场', '用固定人物 IP 制作公众号知识信息图封面。'),
   project('ip-persona-sticker-card-grid-skill', '个人 IP 贴纸卡', 'visual', '贴纸纪念品商店', '从照片、头像或品牌角色生成个人 IP 贴纸九宫格。'),
 
+  project('voice-expression-workbench', '语音表达训练台', 'media', '声音广播站', '通过浏览器录音和分段练习，训练更自然、清楚的口头表达。'),
   project('lingzao-skill', '灵造公开研究 Skill', 'media', '内容研究瞭望塔', '给 Agent 使用的创作者公开内容研究工作流。'),
   project('xhs-profile-breakdown-skill', '小红书主页拆解', 'media', '主页诊断瞭望塔', '用三秒视角检查主页信息是否清楚、可信、值得继续看。'),
   project('weekly-content-motherpack-distributor', '每周母内容分发', 'media', '母内容摩天轮', '把对话和草稿整理成母题，再分发成多平台内容包。'),
@@ -46,11 +48,19 @@ export const projects = [
   project('xhs-title-planner-skill', '小红书标题策划', 'media', '标题大转盘', '从真实内容中提取最值得点击的标题钩子。'),
   project('full-web-sync-open-skill', '全网同步发布', 'media', '全网广播塔', '把项目打包为 GitHub Release、X 与知识星球发布材料。'),
 
+  project('desktop-pet-replica', '桌面 AI 小员工', 'agent', 'AI 员工巡游车', '把多个 AI 任务变成会在桌面上移动、工作和反馈状态的小员工。'),
+  project('tuyu-language-notebook', '途语旅行语言本', 'agent', '世界语言观光车', '整理旅行中遇到的词语、例句和场景，形成可继续学习的语言笔记。'),
   project('agent-knowledge-space', 'Agent 知识空间', 'agent', '知识空间摩天轮', '把本地知识与 Agent 线程变成关系星图、工作树和粒子空间。'),
   project('content-graph-builder-skill', '内容知识图谱', 'agent', '知识迷宫', '从对话、笔记和项目资料构建 Markdown 双链知识图谱。'),
   project('codex-thread-console', 'Codex 多任务控制台', 'agent', 'Agent 调度塔', '在本地查看和管理多个 Codex 任务的中文工作台。'),
   project('interactive-rhythm-calendar', '互动节奏日历', 'agent', '时间旋转木马', '带本地笔记与提醒的隐私友好型互动日历。'),
 
+  project('atian-playground', '阿甜游乐园', 'interactive', '中央游客中心', '把阿甜做过的开源 Skill、网站和互动项目整理成一座可以逛、可以复制使用的乐园。'),
+  project('penang-foodmap-demo', '槟城美食手帐地图', 'interactive', '槟城寻味观光船', '用手帐风互动地图收藏和浏览槟城美食地点。'),
+  project('air-magic-book-demo', '空中魔法书', 'interactive', '空中魔法旋转剧场', '通过摄像头识别手势，在空中翻动和操控一本互动魔法书。'),
+  project('gesture-curtain-demo', '手势揭幕舞台', 'interactive', '手势揭幕大剧院', '挥动手势拉开舞台幕布，让网页内容以仪式感方式登场。'),
+  project('particle-music-box-demo', '粒子音乐盒', 'interactive', '粒子音乐飞椅', '让音乐与粒子动画一起运转，形成可以观看和操作的创意互动体验。'),
+  project('wordpop-junior-english', 'WordPop 少儿英语', 'interactive', '单词弹跳乐园', '通过弹跳、配对和反馈，把少儿英语词汇练习变成网页小游戏。'),
   project('quiz-site-builder-skill', '测评网站生成器', 'interactive', '人格测评迷宫', '从题目、维度和计分逻辑生成可分享的测评网站。'),
   project('gesture-music-grid-demo', '隔空水果消消乐', 'interactive', '手势街机厅', '用手势碰指选中、松开消除的三分钟网页街机。', 'https://fruitmatch.midao.site/'),
   project('air-fruit-slicer-demo', '隔空切水果', 'interactive', '体感水果飞船', '用整只手体感切水果，完成五分钟久坐唤醒运动。', 'https://fruitfit.midao.site/'),
@@ -61,22 +71,12 @@ export const projects = [
 ]
 
 export const openSourceAudit = {
-  liveCount: 38,
-  checkedAt: '2026-08-20',
+  liveCount: 48,
+  checkedAt: '2026-08-21',
   priority: [
-    ['atian-playground', '阿甜游乐园本身最适合作为总入口开源，能反向导流全部项目。'],
-    ['desktop-pet-replica', '桌面 AI 小员工有鲜明视觉和可演示交互，适合独立发布。'],
     ['content-distribution-workbench-demo', '一人公司内容工作台有完整闭环，公开前需移除真实任务与本地路径。'],
-    ['voice-expression-workbench', '语音表达训练用途清楚，适合做浏览器端开源工具。'],
-    ['food-sticker-demo', '用户价值直观、视觉结果强，适合补齐部署与公开仓库。'],
-    ['penang-foodmap-demo', '有明确个人手帐差异化，适合以模板和示例数据开源。'],
   ],
   prepare: [
-    ['air-magic-book-demo', '交互有趣，但需补摄像头权限说明、兼容性和演示视频。'],
-    ['gesture-curtain-demo', '适合做实验型开源 Demo，先补降级交互和性能说明。'],
-    ['particle-music-box-demo', '适合创意编码项目，先确认音乐素材授权边界。'],
-    ['途语-demo', '语言生词本值得做，但应先抽离私人词库和旅行数据。'],
-    ['junior-english-vocab-demo', '可做亲子学习模板，先补内容版权与数据来源。'],
     ['write-then-publish-app', '本地 Skill 已存在，需先补 README、示例与公开边界。'],
   ],
   hold: [
