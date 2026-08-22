@@ -5,7 +5,31 @@ import { agentPrompt, categories, openSourceAudit, projects } from './projects.j
 
 const app = document.querySelector('#app')
 const state = { category: 'visual', project: projects[0], audit: false }
-const slots = ['photo', 'carousel', 'train', 'maze', 'wheel', 'tower', 'pendulum', 'boat']
+
+const attractionOverrides = {
+  'food-sticker-demo': ['icecream', '🍦'],
+  'xhs-profile-breakdown-skill': ['glasses', '👓'],
+  'xhs-title-planner-skill': ['balloon', '🎈'],
+  'ip-persona-sticker-card-grid-skill': ['gift', '🎁'],
+  'penang-foodmap-demo': ['boat', '⛵'],
+  'desktop-pet-replica': ['parade', '🤖'],
+}
+
+function attractionFor(item) {
+  if (attractionOverrides[item.id]) return attractionOverrides[item.id]
+  const name = `${item.title}${item.facility}`
+  if (/照相|封面|画廊|海报|贴纸|拼贴|配图/.test(name)) return ['studio', '📷']
+  if (/火车|观光车|穿梭/.test(name)) return ['train', '🚂']
+  if (/摩天轮|转盘|旋转木马|飞椅/.test(name)) return ['spin', '🎡']
+  if (/过山车|大摆锤|飞船|回旋镖/.test(name)) return ['ride', '🎢']
+  if (/剧场|舞台|广播|音乐/.test(name)) return ['stage', '🎭']
+  if (/迷宫|知识空间|图谱/.test(name)) return ['maze', '🌿']
+  if (/塔|雷达|总站|中心|检查/.test(name)) return ['tower', '📡']
+  if (/水上|漂流|船/.test(name)) return ['boat', '🦢']
+  if (/游戏|街机|弹跳|投篮|碰碰车/.test(name)) return ['game', '🎮']
+  if (/工坊|实验|工作室|训练/.test(name)) return ['workshop', '🛠️']
+  return ['stall', '🎪']
+}
 
 const categoryCount = id => projects.filter(project => project.category === id).length
 const categoryById = id => categories.find(category => category.id === id)
@@ -34,12 +58,14 @@ function sidebarMarkup() {
 
 function hotspotMarkup() {
   const current = projects.filter(project => project.category === state.category)
-  const featured = current.slice(0, 8)
-  if (state.project && !featured.some(item => item.id === state.project.id)) featured[0] = state.project
-  return featured.map((item, index) => `
-    <button class="facility facility--${slots[index]} ${state.project?.id === item.id ? 'is-selected' : ''}" data-project="${item.id}" aria-label="打开项目：${item.title}">
+  return current.map((item, index) => {
+    const [kind, icon] = attractionFor(item)
+    return `
+    <button class="facility facility--${kind} ${state.project?.id === item.id ? 'is-selected' : ''}" style="--i:${index}" data-project="${item.id}" aria-label="打开项目：${item.title}，设施：${item.facility}">
+      <span class="facility-model" aria-hidden="true"><span>${icon}</span></span>
       <span class="facility-sign"><b>${String(index + 1).padStart(2, '0')}</b><span>${item.facility}</span></span>
-    </button>`).join('')
+    </button>`
+  }).join('')
 }
 
 function tutorialMarkup(item) {
@@ -74,9 +100,9 @@ function auditMarkup() {
 app.innerHTML = `
   <main class="park-app">
     <header class="topbar">
-      <a class="brand" href="#park"><span class="brand-mark">甜</span><span>阿甜游乐园</span></a>
+      <a class="brand" href="#park"><span class="brand-mark">甜</span><span>阿甜的 Skill 游乐园</span></a>
       <p>把真实项目变成一座可以逛、可以复制使用的开源乐园</p>
-      <nav><button data-audit>开源排查</button><a href="https://github.com/atian-create" target="_blank" rel="noreferrer">GitHub 主页 ↗</a></nav>
+      <nav><span class="park-status"><i></i>全园运行中</span><button data-audit>开源排查</button><a href="https://github.com/atian-create" target="_blank" rel="noreferrer">GitHub 主页 ↗</a></nav>
     </header>
 
     <aside class="project-sidebar" aria-label="开源项目分类">
@@ -87,6 +113,11 @@ app.innerHTML = `
     </aside>
 
     <section class="park-map" id="park" aria-label="阿甜游乐园地图">
+      <div class="park-gate" aria-label="阿甜的 Skill 游乐园大门">
+        <i class="gate-tower gate-tower--left"></i>
+        <div><strong>阿甜的 Skill 游乐园</strong><small>ATIAN'S SKILL PARK</small></div>
+        <i class="gate-tower gate-tower--right"></i>
+      </div>
       <div class="zone-banner" style="--zone:${categoryById(state.category).color}">
         <span>${categoryById(state.category).icon}</span>
         <div><b data-zone-name>${categoryById(state.category).name}</b><small data-zone-intro>${categoryById(state.category).intro}</small></div>
@@ -94,7 +125,7 @@ app.innerHTML = `
       </div>
       <div class="facility-layer" data-facilities>${hotspotMarkup()}</div>
       <div class="moving-visitors" aria-hidden="true">
-        ${Array.from({length: 6}, (_, index) => `<img src="${visitorSprite}" class="moving-visitor moving-visitor--${index + 1}" alt="" style="--delay:-${index * 4.3}s">`).join('')}
+        ${Array.from({length: 10}, (_, index) => `<img src="${visitorSprite}" class="moving-visitor moving-visitor--${index + 1}" alt="" style="--delay:-${index * 3.1}s">`).join('')}
       </div>
       <div class="moving-boats" aria-hidden="true">
         <img src="${swanSprite}" class="swan swan--one" alt="">
@@ -116,7 +147,7 @@ const facilities = document.querySelector('[data-facilities]')
 const drawer = document.querySelector('[data-drawer]')
 const detail = document.querySelector('[data-detail]')
 
-function renderDetail() {
+function renderDetail(open = true) {
   if (state.audit) {
     detail.innerHTML = `<p class="drawer-kicker">开源排查</p><h2>下一批施工项目</h2><p class="drawer-lead">先把边界整理清楚，再把真正值得复用的项目开放出去。</p>${auditMarkup()}`
   } else {
@@ -130,12 +161,13 @@ function renderDetail() {
       <h3>三步启动</h3>
       ${tutorialMarkup(item)}`
   }
-  drawer.classList.add('is-open')
+  drawer.classList.toggle('is-open', open)
 }
 
 function renderCategory() {
   const category = categoryById(state.category)
   sidebar.innerHTML = sidebarMarkup()
+  sidebar.scrollTop = 0
   facilities.innerHTML = hotspotMarkup()
   const banner = document.querySelector('.zone-banner')
   banner.style.setProperty('--zone', category.color)
@@ -160,7 +192,7 @@ function selectCategory(id) {
   state.project = projects.find(project => project.category === id)
   state.audit = false
   renderCategory()
-  renderDetail()
+  renderDetail(false)
 }
 
 function showToast(message) {
@@ -210,4 +242,4 @@ document.addEventListener('keydown', event => {
   if (event.key === 'Escape') drawer.classList.remove('is-open')
 })
 
-renderDetail()
+renderDetail(false)

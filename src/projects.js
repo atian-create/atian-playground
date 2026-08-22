@@ -17,7 +17,7 @@ const project = (repo, title, category, facility, description, homepage = '') =>
 })
 
 export const projects = [
-  project('food-sticker-demo', '美食贴纸生成器', 'visual', '美食贴纸照相馆', '把食物照片变成适合收藏和分享的可爱贴纸。'),
+  project('food-sticker-demo', '美食贴纸生成器', 'visual', '美食冰淇淋车', '把食物照片变成适合收藏和分享的可爱贴纸。'),
   project('knowledge-card-journal-skill', '知识卡片手帐', 'visual', '知识卡片旋转木马', '把截图、链接、笔记和逐字稿整理成统一的手帐知识卡片。'),
   project('solo-ai-paper-collage', 'AI 撕纸拼贴', 'visual', '撕纸拼贴工坊', '把一人公司和 AI 工作流变成有纸张触感的中文信息图。'),
   project('codex-dream-skin-studio', 'Codex 换肤工作室', 'visual', '换肤照相馆', '安装、切换、验证并安全恢复 Codex Desktop 主题。'),
@@ -30,7 +30,7 @@ export const projects = [
 
   project('voice-expression-workbench', '语音表达训练台', 'media', '声音广播站', '通过浏览器录音和分段练习，训练更自然、清楚的口头表达。'),
   project('lingzao-skill', '灵造公开研究 Skill', 'media', '内容研究瞭望塔', '给 Agent 使用的创作者公开内容研究工作流。'),
-  project('xhs-profile-breakdown-skill', '小红书主页拆解', 'media', '主页诊断瞭望塔', '用三秒视角检查主页信息是否清楚、可信、值得继续看。'),
+  project('xhs-profile-breakdown-skill', '小红书主页拆解', 'media', '主页洞察眼镜店', '用三秒视角检查主页信息是否清楚、可信、值得继续看。'),
   project('weekly-content-motherpack-distributor', '每周母内容分发', 'media', '母内容摩天轮', '把对话和草稿整理成母题，再分发成多平台内容包。'),
   project('xhs-keyword-design-skill', '小红书关键词设计', 'media', '关键词飞镖场', '设计与内容、搜索和用户意图一致的发布关键词。'),
   project('xhs-benchmark-account-finder-skill', '对标账号寻找器', 'media', '对标寻宝迷宫', '寻找仍然活跃、阶段匹配、真正可学的对标账号。'),
@@ -45,7 +45,7 @@ export const projects = [
   project('multi-platform-publishing-tracker-skill', '多平台发布清单 Skill', 'media', '平台穿梭小火车', '把一个内容包变成跨平台发布清单和复盘提醒。'),
   project('single-note-breakdown-skill', '单篇内容拆解', 'media', '内容解剖剧场', '拆解一篇内容的点击、停留、收藏、评论与可迁移结构。'),
   project('xhs-account-diagnosis-open-skill', '小红书账号诊断', 'media', '账号体检中心', '从公开数据生成面向客户的账号诊断报告。'),
-  project('xhs-title-planner-skill', '小红书标题策划', 'media', '标题大转盘', '从真实内容中提取最值得点击的标题钩子。'),
+  project('xhs-title-planner-skill', '小红书标题策划', 'media', '标题气球摊', '从真实内容中提取最值得点击的标题钩子。'),
   project('full-web-sync-open-skill', '全网同步发布', 'media', '全网广播塔', '把项目打包为 GitHub Release、X 与知识星球发布材料。'),
 
   project('desktop-pet-replica', '桌面 AI 小员工', 'agent', 'AI 员工巡游车', '把多个 AI 任务变成会在桌面上移动、工作和反馈状态的小员工。'),
