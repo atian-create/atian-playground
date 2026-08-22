@@ -25,7 +25,7 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
   min-height: 100svh;
   display: grid;
   grid-template-columns: 318px minmax(0, 1fr);
-  grid-template-rows: 70px minmax(690px, calc(100svh - 70px));
+  grid-template-rows: 70px minmax(620px, calc(100svh - 70px));
   overflow: hidden;
 }
 
@@ -46,6 +46,8 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
 .brand-mark { width: 40px; height: 40px; display: grid; place-items: center; border: 3px solid var(--ink); background: var(--red); box-shadow: 4px 4px 0 var(--yellow); }
 .topbar > p { min-width: 0; margin: 0; padding: 0 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; font-weight: 700; opacity: .78; }
 .topbar nav { display: flex; gap: 9px; padding-right: 18px; }
+.park-status { display: inline-flex; align-items: center; gap: 7px; padding: 0 5px; color: #27713e; font-size: 10px; font-weight: 900; white-space: nowrap; }
+.park-status i { width: 9px; height: 9px; border: 2px solid var(--ink); border-radius: 50%; background: #5fd05f; box-shadow: 0 0 0 3px rgba(95,208,95,.25); animation: status-pulse 1.6s ease-in-out infinite; }
 .topbar nav button, .topbar nav a { min-height: 39px; display: inline-flex; align-items: center; justify-content: center; border: 3px solid var(--ink); padding: 7px 13px; background: white; box-shadow: 3px 3px 0 var(--ink); font-size: 12px; font-weight: 900; text-decoration: none; }
 .topbar nav button:hover, .topbar nav a:hover { transform: translateY(-2px); background: var(--yellow); }
 
@@ -98,7 +100,17 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
 }
 .park-map::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background-image: linear-gradient(rgba(6,47,61,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(6,47,61,.06) 1px, transparent 1px); background-size: 4px 4px; mix-blend-mode: multiply; }
 
-.zone-banner { position: absolute; z-index: 20; top: 20px; left: 24px; right: 24px; max-width: 720px; display: grid; grid-template-columns: 46px 1fr auto; align-items: center; gap: 12px; border: 4px solid var(--ink); padding: 10px 14px; background: var(--cream); box-shadow: inset 0 0 0 4px white, 6px 7px 0 rgba(6,47,61,.45); }
+.park-gate { position: absolute; z-index: 24; top: 11px; left: 50%; width: min(500px, calc(100% - 42px)); height: 68px; display: grid; grid-template-columns: 54px 1fr 54px; align-items: end; transform: translateX(-50%); filter: drop-shadow(7px 8px 0 rgba(6,47,61,.48)); }
+.park-gate > div { position: relative; align-self: start; display: grid; place-items: center; min-height: 54px; border: 4px solid var(--ink); padding: 6px 14px; background: var(--red); color: white; box-shadow: inset 0 0 0 4px #ffef9f; text-align: center; }
+.park-gate strong, .park-gate small { display: block; }
+.park-gate strong { font-size: clamp(16px, 2vw, 23px); line-height: 1.15; letter-spacing: .05em; text-shadow: 3px 3px 0 #9d271d; }
+.park-gate small { margin-top: 3px; color: #fff3bd; font: 8px/1.1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .18em; }
+.gate-tower { position: relative; display: block; width: 48px; height: 60px; border: 4px solid var(--ink); background: repeating-linear-gradient(90deg, #f4c248 0 9px, #fff0aa 9px 18px); }
+.gate-tower::before { content: ''; position: absolute; left: -9px; top: -13px; width: 58px; height: 17px; border: 4px solid var(--ink); background: var(--blue); clip-path: polygon(50% 0,100% 100%,0 100%); }
+.gate-tower::after { content: ''; position: absolute; left: 13px; bottom: 0; width: 14px; height: 27px; border: 3px solid var(--ink); border-bottom: 0; background: var(--navy-deep); }
+.gate-tower--right { justify-self: end; }
+
+.zone-banner { position: absolute; z-index: 20; top: 88px; left: 24px; right: 24px; max-width: 720px; display: grid; grid-template-columns: 46px 1fr auto; align-items: center; gap: 12px; border: 4px solid var(--ink); padding: 10px 14px; background: var(--cream); box-shadow: inset 0 0 0 4px white, 6px 7px 0 rgba(6,47,61,.45); }
 .zone-banner::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 8px; background: var(--zone); }
 .zone-banner > span { width: 40px; height: 40px; display: grid; place-items: center; border: 3px solid var(--ink); background: var(--zone); font-size: 21px; }
 .zone-banner b, .zone-banner small { display: block; }
@@ -106,30 +118,44 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
 .zone-banner small { margin-top: 3px; font-size: 10px; line-height: 1.4; opacity: .72; }
 .zone-banner strong { border: 3px solid var(--ink); padding: 6px 9px; background: var(--yellow); font-size: 12px; white-space: nowrap; }
 
-.facility-layer { position: absolute; inset: 0; z-index: 12; }
-.facility { position: absolute; width: 190px; height: 86px; border: 0; background: transparent; }
-.facility-sign { position: absolute; left: 50%; top: 0; display: flex; align-items: stretch; min-width: 150px; max-width: 205px; transform: translateX(-50%); border: 4px solid var(--ink); background: var(--cream); box-shadow: inset 0 0 0 3px white, 5px 6px 0 rgba(6,47,61,.55); transition: transform .18s, filter .18s; }
-.facility-sign b { min-width: 42px; display: grid; place-items: center; padding: 8px; background: var(--red); color: white; font-size: 15px; }
-.facility-sign span { display: grid; place-items: center start; padding: 8px 10px; font-size: 12px; font-weight: 900; line-height: 1.25; white-space: nowrap; }
-.facility:hover .facility-sign, .facility:focus-visible .facility-sign, .facility.is-selected .facility-sign { transform: translateX(-50%) translateY(-7px); filter: saturate(1.16); }
-.facility.is-selected .facility-sign { background: var(--yellow); box-shadow: inset 0 0 0 3px #fff3a0, 6px 8px 0 var(--ink); }
-.facility--photo { left: 5%; top: 40%; }
-.facility--carousel { left: 19%; top: 17%; }
-.facility--train { left: 33%; top: 48%; }
-.facility--maze { left: 43%; top: 8%; }
-.facility--wheel { right: 21%; top: 46%; }
-.facility--tower { right: 3%; top: 15%; }
-.facility--pendulum { right: 2%; top: 51%; }
-.facility--boat { left: 64%; top: 18%; }
+.facility-layer { position: absolute; z-index: 12; inset: 165px 18px 62px; display: grid; grid-template-columns: repeat(5, minmax(105px, 1fr)); grid-auto-rows: minmax(86px, 1fr); gap: 7px 8px; align-content: stretch; }
+.facility { position: relative; min-width: 0; min-height: 82px; border: 0; background: transparent; transform: translateY(calc((var(--i) % 3) * 3px)); }
+.facility-model { position: absolute; z-index: 1; left: 50%; top: 0; width: 58px; height: 47px; display: grid; place-items: center; transform: translateX(-50%); border: 3px solid var(--ink); border-radius: 50% 50% 7px 7px; background: repeating-linear-gradient(90deg, #fff4bd 0 9px, var(--yellow) 9px 18px); box-shadow: 4px 5px 0 rgba(6,47,61,.48); transform-origin: 50% 100%; }
+.facility-model::before { content: ''; position: absolute; left: 6px; right: 6px; bottom: -9px; height: 11px; border: 3px solid var(--ink); background: var(--red); }
+.facility-model > span { position: relative; z-index: 2; font-size: 25px; line-height: 1; filter: drop-shadow(1px 2px 0 white); }
+.facility-sign { position: absolute; z-index: 3; left: 50%; bottom: 0; width: min(100%, 158px); min-height: 35px; display: flex; align-items: stretch; transform: translateX(-50%); border: 3px solid var(--ink); background: var(--cream); box-shadow: inset 0 0 0 2px white, 4px 5px 0 rgba(6,47,61,.55); transition: transform .18s, filter .18s; }
+.facility-sign b { min-width: 34px; display: grid; place-items: center; padding: 6px 5px; background: var(--red); color: white; font-size: 11px; }
+.facility-sign span { min-width: 0; display: grid; place-items: center start; overflow: hidden; padding: 6px 7px; font-size: 10px; font-weight: 900; line-height: 1.15; text-overflow: ellipsis; white-space: nowrap; }
+.facility:hover .facility-sign, .facility:focus-visible .facility-sign, .facility.is-selected .facility-sign { transform: translateX(-50%) translateY(-5px); filter: saturate(1.16); }
+.facility:hover .facility-model, .facility:focus-visible .facility-model, .facility.is-selected .facility-model { filter: brightness(1.1) saturate(1.15); }
+.facility.is-selected .facility-sign { background: var(--yellow); box-shadow: inset 0 0 0 2px #fff3a0, 5px 6px 0 var(--ink); }
+
+.facility--spin .facility-model { border-radius: 50%; background: #73c9e6; animation: attraction-spin 5s linear infinite; }
+.facility--ride .facility-model { border-radius: 28px 28px 8px 8px; background: #ff8c52; animation: attraction-swing 2.2s ease-in-out infinite; }
+.facility--balloon .facility-model { width: 48px; border-radius: 50% 50% 46% 46%; background: #ff6e5b; animation: balloon-float 2.8s ease-in-out infinite; }
+.facility--balloon .facility-model::before { left: 19px; right: auto; bottom: -16px; width: 5px; height: 17px; border-width: 2px; background: #f3d69b; }
+.facility--glasses .facility-model { background: #75d2dd; animation: shop-bob 2.6s ease-in-out infinite; }
+.facility--icecream .facility-model { background: repeating-linear-gradient(90deg, #ff9ec5 0 9px, #fff3c7 9px 18px); animation: shop-bob 2.9s ease-in-out infinite; }
+.facility--train .facility-model, .facility--parade .facility-model { width: 68px; border-radius: 9px; background: #47a8dc; animation: train-chug 1.4s ease-in-out infinite; }
+.facility--tower .facility-model { border-radius: 50% 50% 4px 4px; background: #73c66a; animation: tower-scan 2.4s ease-in-out infinite; }
+.facility--stage .facility-model { background: #d94c3b; animation: stage-open 2.8s ease-in-out infinite; }
+.facility--boat .facility-model { background: #6fcae7; animation: boat-bob 2.5s ease-in-out infinite; }
+.facility--game .facility-model { background: #ff8f53; animation: game-pop 1.8s ease-in-out infinite; }
+.facility--maze .facility-model { background: #70ba63; animation: maze-breathe 3.2s ease-in-out infinite; }
+.facility--studio .facility-model, .facility--workshop .facility-model, .facility--stall .facility-model, .facility--gift .facility-model { animation: shop-bob 3s ease-in-out infinite; }
 
 .moving-visitors, .moving-boats { position: absolute; inset: 0; z-index: 9; pointer-events: none; }
 .moving-visitor { position: absolute; width: 30px; height: 45px; object-fit: contain; filter: drop-shadow(2px 3px 0 rgba(6,47,61,.35)); animation-duration: 28s; animation-delay: var(--delay); animation-timing-function: linear; animation-iteration-count: infinite; will-change: left, top, transform; }
-.moving-visitor--1, .moving-visitor--4 { animation-name: visitor-route-one; }
-.moving-visitor--2, .moving-visitor--5 { animation-name: visitor-route-two; }
-.moving-visitor--3, .moving-visitor--6 { animation-name: visitor-route-three; }
+.moving-visitor--1, .moving-visitor--4, .moving-visitor--7, .moving-visitor--10 { animation-name: visitor-route-one; }
+.moving-visitor--2, .moving-visitor--5, .moving-visitor--8 { animation-name: visitor-route-two; }
+.moving-visitor--3, .moving-visitor--6, .moving-visitor--9 { animation-name: visitor-route-three; }
 .moving-visitor--4 { animation-duration: 34s; transform: scale(.82); }
 .moving-visitor--5 { animation-duration: 31s; transform: scale(.9); }
 .moving-visitor--6 { animation-duration: 37s; transform: scale(.78); }
+.moving-visitor--7 { animation-duration: 32s; opacity: .9; }
+.moving-visitor--8 { animation-duration: 39s; transform: scale(.74); }
+.moving-visitor--9 { animation-duration: 30s; transform: scale(.86); }
+.moving-visitor--10 { animation-duration: 42s; transform: scale(.7); }
 .swan { position: absolute; width: 68px; height: 48px; object-fit: contain; filter: drop-shadow(2px 4px 0 rgba(6,47,61,.28)); will-change: transform; }
 .swan--one { right: 8%; bottom: 7%; animation: swan-glide-one 12s ease-in-out infinite; }
 .swan--two { right: 17%; bottom: 3%; width: 54px; opacity: .92; animation: swan-glide-two 15s ease-in-out -6s infinite; }
@@ -204,21 +230,33 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
 }
 @keyframes swan-glide-one { 0%,100% { transform: translate(0,0) rotate(-2deg); } 45% { transform: translate(-52px,-20px) rotate(3deg); } 70% { transform: translate(-28px,-8px) rotate(0); } }
 @keyframes swan-glide-two { 0%,100% { transform: translate(0,0) scaleX(-1); } 50% { transform: translate(44px,-24px) scaleX(-1) rotate(-3deg); } }
+@keyframes status-pulse { 0%,100% { opacity: .62; transform: scale(.82); } 50% { opacity: 1; transform: scale(1.12); } }
+@keyframes attraction-spin { to { transform: translateX(-50%) rotate(360deg); } }
+@keyframes attraction-swing { 0%,100% { transform: translateX(-50%) rotate(-7deg); } 50% { transform: translateX(-50%) rotate(7deg); } }
+@keyframes balloon-float { 0%,100% { transform: translate(-50%, 2px) rotate(-3deg); } 50% { transform: translate(-50%, -7px) rotate(3deg); } }
+@keyframes shop-bob { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-3px); } }
+@keyframes train-chug { 0%,100% { transform: translateX(-53%); } 50% { transform: translateX(-47%); } }
+@keyframes tower-scan { 0%,100% { filter: brightness(.9); } 50% { filter: brightness(1.25) drop-shadow(0 0 7px #ffe436); } }
+@keyframes stage-open { 0%,100% { transform: translateX(-50%) scaleX(.92); } 50% { transform: translateX(-50%) scaleX(1.04); } }
+@keyframes boat-bob { 0%,100% { transform: translateX(-50%) translateY(1px) rotate(-2deg); } 50% { transform: translateX(-50%) translateY(-4px) rotate(2deg); } }
+@keyframes game-pop { 0%,100% { transform: translateX(-50%) scale(.94); } 50% { transform: translateX(-50%) scale(1.05); } }
+@keyframes maze-breathe { 0%,100% { transform: translateX(-50%) scale(.96); } 50% { transform: translateX(-50%) scale(1.03); } }
 
 @media (max-width: 1100px) {
   .park-app { grid-template-columns: 280px minmax(0,1fr); }
   .topbar { grid-template-columns: 280px 1fr auto; }
   .topbar > p { display: none; }
   .topbar nav { grid-column: 2 / 4; justify-self: end; }
-  .facility { transform: scale(.82); }
-  .facility--photo { left: 1%; }.facility--carousel { left: 18%; }.facility--train { left: 30%; }.facility--maze { left: 40%; }.facility--boat { left: 58%; }
+  .park-status { display: none; }
+  .facility-layer { grid-template-columns: repeat(4, minmax(105px, 1fr)); }
+  .facility { transform: scale(.88) translateY(calc((var(--i) % 3) * 3px)); }
   .detail-drawer { width: min(520px, calc(100vw - 314px)); }
 }
 
 @media (max-width: 760px) {
   .park-app { display: block; overflow: visible; background: var(--navy-deep); }
   .topbar { position: sticky; top: 0; display: flex; height: 62px; }
-  .brand { border-right: 0; background: transparent; color: var(--ink); padding: 0 14px; font-size: 16px; }
+  .brand { border-right: 0; background: transparent; color: var(--ink); padding: 0 10px; font-size: 13px; }
   .brand-mark { width: 34px; height: 34px; }
   .topbar nav { margin-left: auto; padding-right: 10px; }
   .topbar nav button { display: none; }
@@ -227,12 +265,19 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
   .sidebar-heading { padding-top: 15px; }
   .project-groups { max-height: 235px; }
   .audit-button { display: none; }
-  .park-map { height: 670px; background-position: 48% center; }
-  .zone-banner { top: 12px; left: 12px; right: 12px; grid-template-columns: 39px 1fr auto; padding: 8px 10px; }
+  .park-map { height: 1040px; background-position: 48% center; }
+  .park-gate { top: 12px; width: calc(100% - 24px); height: 61px; grid-template-columns: 43px 1fr 43px; }
+  .park-gate > div { min-height: 50px; padding: 5px 6px; }
+  .park-gate strong { font-size: 15px; }
+  .gate-tower { width: 40px; height: 52px; }
+  .gate-tower::before { left: -7px; width: 46px; }
+  .gate-tower::after { left: 10px; }
+  .zone-banner { top: 80px; left: 12px; right: 12px; grid-template-columns: 39px 1fr auto; padding: 8px 10px; }
   .zone-banner > span { width: 34px; height: 34px; }
   .zone-banner small { display: none; }
-  .facility { transform: scale(.7); transform-origin: center; }
-  .facility--photo { left: -8%; top: 40%; }.facility--carousel { left: 9%; top: 18%; }.facility--train { left: 22%; top: 50%; }.facility--maze { left: 34%; top: 10%; }.facility--wheel { right: 6%; top: 46%; }.facility--tower { right: -10%; top: 18%; }.facility--pendulum { right: -12%; top: 56%; }.facility--boat { left: 52%; top: 23%; }
+  .facility-layer { inset: 150px 7px 64px; grid-template-columns: repeat(3, minmax(100px, 1fr)); grid-auto-rows: minmax(110px, 1fr); gap: 4px; }
+  .facility { transform: scale(.86) translateY(calc((var(--i) % 3) * 3px)); transform-origin: center; }
+  .facility-sign span { font-size: 9px; }
   .moving-visitor { width: 24px; height: 36px; }
   .swan { width: 52px; }
   .map-help { left: 12px; right: 12px; bottom: 13px; max-width: none; }

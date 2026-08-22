@@ -1,4 +1,4 @@
-# A Tian Playground
+# A Tian's Skill Park
 
 English · [简体中文](README.md)
 
@@ -10,9 +10,9 @@ A pixel-art amusement park that turns A Tian's real open-source Skills, websites
 
 - Lists 48 verified public GitHub repositories.
 - Groups them into Visual Creation, Creator Content, Agent & Knowledge, and Interactive Websites & Games.
-- Maps every featured project to a related amusement-park attraction.
+- Maps every project in the selected zone to a related animated amusement-park attraction.
 - Provides a three-step tutorial, GitHub link, and Agent launch prompt for each project.
-- Animates walking visitors and swan boats.
+- Animates walking visitors, swan boats, rides, balloon stands, glasses shops, ice-cream carts, and other facilities.
 - Includes an open-source audit board for future releases.
 
 ## Run locally
