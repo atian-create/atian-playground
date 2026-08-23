@@ -95,10 +95,15 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
   min-width: 0;
   overflow: hidden;
   isolation: isolate;
-  background: #1876b2 url('./assets/atian-park-world.png') center center / cover no-repeat;
+  background: #1876b2;
   image-rendering: auto;
 }
+.park-map::before { content: ''; position: absolute; inset: -3%; z-index: 0; background: url('./assets/atian-park-world.png') center / 128% auto no-repeat; transition: background-position .55s ease, filter .55s ease, transform .55s ease; }
 .park-map::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background-image: linear-gradient(rgba(6,47,61,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(6,47,61,.06) 1px, transparent 1px); background-size: 4px 4px; mix-blend-mode: multiply; }
+.park-map[data-district="visual"]::before { background-position: 14% 18%; filter: saturate(1.08) brightness(1.02); transform: scale(1.02); }
+.park-map[data-district="media"]::before { background-position: 86% 22%; filter: saturate(1.14) contrast(1.02); transform: scale(1.06); }
+.park-map[data-district="agent"]::before { background-position: 16% 82%; filter: saturate(.92) hue-rotate(7deg); transform: scale(1.05); }
+.park-map[data-district="interactive"]::before { background-position: 84% 84%; filter: saturate(1.2) brightness(1.03); transform: scale(1.03); }
 
 .park-gate { position: absolute; z-index: 24; top: 11px; left: 50%; width: min(500px, calc(100% - 42px)); height: 68px; display: grid; grid-template-columns: 54px 1fr 54px; align-items: end; transform: translateX(-50%); filter: drop-shadow(7px 8px 0 rgba(6,47,61,.48)); }
 .park-gate > div { position: relative; align-self: start; display: grid; place-items: center; min-height: 54px; border: 4px solid var(--ink); padding: 6px 14px; background: var(--red); color: white; box-shadow: inset 0 0 0 4px #ffef9f; text-align: center; }
@@ -110,19 +115,37 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
 .gate-tower::after { content: ''; position: absolute; left: 13px; bottom: 0; width: 14px; height: 27px; border: 3px solid var(--ink); border-bottom: 0; background: var(--navy-deep); }
 .gate-tower--right { justify-self: end; }
 
-.zone-banner { position: absolute; z-index: 20; top: 88px; left: 24px; right: 24px; max-width: 720px; display: grid; grid-template-columns: 46px 1fr auto; align-items: center; gap: 12px; border: 4px solid var(--ink); padding: 10px 14px; background: var(--cream); box-shadow: inset 0 0 0 4px white, 6px 7px 0 rgba(6,47,61,.45); }
+.zone-banner { position: absolute; z-index: 20; top: 88px; left: 24px; width: min(560px, calc(100% - 370px)); display: grid; grid-template-columns: 46px 1fr auto; align-items: center; gap: 12px; border: 4px solid var(--ink); padding: 8px 14px; background: var(--cream); box-shadow: inset 0 0 0 4px white, 6px 7px 0 rgba(6,47,61,.45); }
 .zone-banner::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 8px; background: var(--zone); }
 .zone-banner > span { width: 40px; height: 40px; display: grid; place-items: center; border: 3px solid var(--ink); background: var(--zone); font-size: 21px; }
-.zone-banner b, .zone-banner small { display: block; }
+.zone-banner em, .zone-banner b, .zone-banner small { display: block; }
+.zone-banner em { margin-bottom: 2px; color: var(--zone); font-size: 9px; font-style: normal; font-weight: 900; letter-spacing: .08em; }
 .zone-banner b { font-size: 17px; }
 .zone-banner small { margin-top: 3px; font-size: 10px; line-height: 1.4; opacity: .72; }
 .zone-banner strong { border: 3px solid var(--ink); padding: 6px 9px; background: var(--yellow); font-size: 12px; white-space: nowrap; }
 
-.facility-layer { position: absolute; z-index: 12; inset: 165px 18px 62px; display: grid; grid-template-columns: repeat(5, minmax(105px, 1fr)); grid-auto-rows: minmax(86px, 1fr); gap: 7px 8px; align-content: stretch; }
-.facility { position: relative; min-width: 0; min-height: 82px; border: 0; background: transparent; transform: translateY(calc((var(--i) % 3) * 3px)); }
+.district-switcher { position: absolute; z-index: 23; top: 84px; right: 18px; width: 320px; height: 92px; display: grid; grid-template-columns: 1fr 1.05fr 1fr; grid-template-rows: repeat(3, 1fr); gap: 3px; pointer-events: none; }
+.district-link { min-width: 0; display: grid; place-items: center; border: 3px solid var(--ink); padding: 2px 5px; background: rgba(255,249,223,.96); box-shadow: 3px 4px 0 rgba(6,47,61,.5); color: var(--ink); pointer-events: auto; transition: transform .18s, background .18s; }
+.district-link span, .district-link small { display: block; white-space: nowrap; }
+.district-link span { font-size: 9px; font-weight: 900; }
+.district-link small { display: none; }
+.district-link:hover { z-index: 2; transform: translateY(-2px); background: var(--yellow); }
+.district-link.is-current { background: var(--district-color); color: white; box-shadow: inset 0 0 0 2px rgba(255,255,255,.55), 4px 5px 0 var(--ink); }
+.district-link--visual { grid-column: 2; grid-row: 1; }
+.district-link--agent { grid-column: 1; grid-row: 2; }
+.district-link--media { grid-column: 3; grid-row: 2; }
+.district-link--interactive { grid-column: 2; grid-row: 3; }
+.district-center { grid-column: 2; grid-row: 2; display: grid; place-items: center; border: 3px solid var(--ink); background: var(--navy); color: white; box-shadow: 3px 4px 0 rgba(6,47,61,.5); text-align: center; pointer-events: none; }
+.district-center b, .district-center small { display: block; }
+.district-center b { font-size: 9px; }
+.district-center small { font-size: 7px; opacity: .72; }
+
+.facility-layer { position: absolute; z-index: 12; inset: 170px 8px 60px; }
+.facility { position: absolute; left: var(--x); top: var(--y); width: 168px; height: 86px; border: 0; background: transparent; transform: translate(-50%, -50%) scale(var(--s)); transform-origin: center; }
+.district-arrive .facility { animation: facility-arrive .38s both; animation-delay: calc(var(--i) * 14ms); }
 .facility-model { position: absolute; z-index: 1; left: 50%; top: 0; width: 58px; height: 47px; display: grid; place-items: center; transform: translateX(-50%); border: 3px solid var(--ink); border-radius: 50% 50% 7px 7px; background: repeating-linear-gradient(90deg, #fff4bd 0 9px, var(--yellow) 9px 18px); box-shadow: 4px 5px 0 rgba(6,47,61,.48); transform-origin: 50% 100%; }
 .facility-model::before { content: ''; position: absolute; left: 6px; right: 6px; bottom: -9px; height: 11px; border: 3px solid var(--ink); background: var(--red); }
-.facility-model > span { position: relative; z-index: 2; font-size: 25px; line-height: 1; filter: drop-shadow(1px 2px 0 white); }
+.facility-model > span { position: relative; z-index: 2; font-family: "Apple Color Emoji", "Segoe UI Emoji", sans-serif; font-size: 25px; line-height: 1; filter: drop-shadow(1px 2px 0 white); }
 .facility-sign { position: absolute; z-index: 3; left: 50%; bottom: 0; width: min(100%, 158px); min-height: 35px; display: flex; align-items: stretch; transform: translateX(-50%); border: 3px solid var(--ink); background: var(--cream); box-shadow: inset 0 0 0 2px white, 4px 5px 0 rgba(6,47,61,.55); transition: transform .18s, filter .18s; }
 .facility-sign b { min-width: 34px; display: grid; place-items: center; padding: 6px 5px; background: var(--red); color: white; font-size: 11px; }
 .facility-sign span { min-width: 0; display: grid; place-items: center start; overflow: hidden; padding: 6px 7px; font-size: 10px; font-weight: 900; line-height: 1.15; text-overflow: ellipsis; white-space: nowrap; }
@@ -145,6 +168,7 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
 .facility--studio .facility-model, .facility--workshop .facility-model, .facility--stall .facility-model, .facility--gift .facility-model { animation: shop-bob 3s ease-in-out infinite; }
 
 .moving-visitors, .moving-boats { position: absolute; inset: 0; z-index: 9; pointer-events: none; }
+.park-map:not([data-district="interactive"]) .moving-boats { opacity: 0; }
 .moving-visitor { position: absolute; width: 30px; height: 45px; object-fit: contain; filter: drop-shadow(2px 3px 0 rgba(6,47,61,.35)); animation-duration: 28s; animation-delay: var(--delay); animation-timing-function: linear; animation-iteration-count: infinite; will-change: left, top, transform; }
 .moving-visitor--1, .moving-visitor--4, .moving-visitor--7, .moving-visitor--10 { animation-name: visitor-route-one; }
 .moving-visitor--2, .moving-visitor--5, .moving-visitor--8 { animation-name: visitor-route-two; }
@@ -241,6 +265,7 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
 @keyframes boat-bob { 0%,100% { transform: translateX(-50%) translateY(1px) rotate(-2deg); } 50% { transform: translateX(-50%) translateY(-4px) rotate(2deg); } }
 @keyframes game-pop { 0%,100% { transform: translateX(-50%) scale(.94); } 50% { transform: translateX(-50%) scale(1.05); } }
 @keyframes maze-breathe { 0%,100% { transform: translateX(-50%) scale(.96); } 50% { transform: translateX(-50%) scale(1.03); } }
+@keyframes facility-arrive { from { opacity: 0; filter: blur(3px); } to { opacity: 1; filter: blur(0); } }
 
 @media (max-width: 1100px) {
   .park-app { grid-template-columns: 280px minmax(0,1fr); }
@@ -248,8 +273,9 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
   .topbar > p { display: none; }
   .topbar nav { grid-column: 2 / 4; justify-self: end; }
   .park-status { display: none; }
-  .facility-layer { grid-template-columns: repeat(4, minmax(105px, 1fr)); }
-  .facility { transform: scale(.88) translateY(calc((var(--i) % 3) * 3px)); }
+  .zone-banner { width: min(450px, calc(100% - 285px)); }
+  .district-switcher { right: 10px; width: 260px; }
+  .facility { width: 150px; transform: translate(-50%, -50%) scale(var(--s)); }
   .detail-drawer { width: min(520px, calc(100vw - 314px)); }
 }
 
@@ -265,18 +291,28 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
   .sidebar-heading { padding-top: 15px; }
   .project-groups { max-height: 235px; }
   .audit-button { display: none; }
-  .park-map { height: 1040px; background-position: 48% center; }
+  .park-map { height: 1050px; }
+  .park-map::before { inset: 0; background-size: auto 100%; }
+  .park-map[data-district="media"] { height: 1620px; }
+  .park-map[data-district="agent"] { height: 850px; }
+  .park-map[data-district="interactive"] { height: 1260px; }
   .park-gate { top: 12px; width: calc(100% - 24px); height: 61px; grid-template-columns: 43px 1fr 43px; }
   .park-gate > div { min-height: 50px; padding: 5px 6px; }
   .park-gate strong { font-size: 15px; }
   .gate-tower { width: 40px; height: 52px; }
   .gate-tower::before { left: -7px; width: 46px; }
   .gate-tower::after { left: 10px; }
-  .zone-banner { top: 80px; left: 12px; right: 12px; grid-template-columns: 39px 1fr auto; padding: 8px 10px; }
+  .zone-banner { top: 80px; left: 12px; width: calc(100% - 24px); grid-template-columns: 39px 1fr auto; padding: 8px 10px; }
   .zone-banner > span { width: 34px; height: 34px; }
   .zone-banner small { display: none; }
-  .facility-layer { inset: 150px 7px 64px; grid-template-columns: repeat(3, minmax(100px, 1fr)); grid-auto-rows: minmax(110px, 1fr); gap: 4px; }
-  .facility { transform: scale(.86) translateY(calc((var(--i) % 3) * 3px)); transform-origin: center; }
+  .district-switcher { top: 148px; left: 12px; right: 12px; width: auto; height: 52px; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr; gap: 5px; }
+  .district-link, .district-link--visual, .district-link--agent, .district-link--media, .district-link--interactive { grid-column: auto; grid-row: 1; }
+  .district-link { min-height: 48px; padding: 4px 2px; }
+  .district-link span { font-size: 8px; }
+  .district-link small { display: none; }
+  .district-center { display: none; }
+  .facility-layer { inset: 220px 0 76px; }
+  .facility { left: var(--mx); top: var(--my); width: 154px; transform: translate(-50%, -50%) scale(var(--s)); }
   .facility-sign span { font-size: 9px; }
   .moving-visitor { width: 24px; height: 36px; }
   .swan { width: 52px; }
