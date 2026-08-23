@@ -99,11 +99,11 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
   image-rendering: auto;
 }
 .park-map::before { content: ''; position: absolute; inset: 0; z-index: 0; background-image: var(--district-bg); background-position: center; background-size: cover; background-repeat: no-repeat; transition: filter .55s ease, transform .55s ease; }
-.park-map::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background-image: linear-gradient(rgba(6,47,61,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(6,47,61,.06) 1px, transparent 1px); background-size: 4px 4px; mix-blend-mode: multiply; }
-.park-map[data-district="visual"]::before { filter: saturate(1.05) brightness(1.02); }
-.park-map[data-district="media"]::before { filter: saturate(1.1) contrast(1.02); }
-.park-map[data-district="agent"]::before { filter: saturate(.96) brightness(.92); }
-.park-map[data-district="interactive"]::before { filter: saturate(1.12) brightness(1.03); }
+.park-map::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(180deg, rgba(255,244,181,.17), rgba(255,255,255,.03) 48%, rgba(255,237,168,.12)); box-shadow: inset 0 0 90px rgba(255,246,195,.15); }
+.park-map[data-district="visual"]::before { filter: saturate(1.08) brightness(1.1); }
+.park-map[data-district="media"]::before { filter: saturate(1.08) brightness(1.09) contrast(.98); }
+.park-map[data-district="agent"]::before { filter: saturate(1.03) brightness(1.17) contrast(.94); }
+.park-map[data-district="interactive"]::before { filter: saturate(1.1) brightness(1.11); }
 .park-map.district-arrive::before { animation: environment-arrive .58s cubic-bezier(.2,.8,.2,1) both; }
 
 .park-gate { position: absolute; z-index: 24; top: 11px; left: 50%; width: min(500px, calc(100% - 42px)); height: 68px; display: grid; grid-template-columns: 54px 1fr 54px; align-items: end; transform: translateX(-50%); filter: drop-shadow(7px 8px 0 rgba(6,47,61,.48)); }
@@ -142,17 +142,42 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
 .district-center small { font-size: 7px; opacity: .72; }
 
 .facility-layer { position: absolute; z-index: 12; inset: 170px 8px 60px; }
-.facility { position: absolute; left: var(--x); top: var(--y); width: 168px; height: 86px; border: 0; background: transparent; transform: translate(-50%, -50%) scale(var(--s)); transform-origin: center; }
+.facility { --facility-accent: #f04a2d; --facility-light: #ffd63e; position: absolute; left: var(--x); top: var(--y); width: 190px; height: 112px; border: 0; padding: 0; background: transparent; cursor: pointer; transform: translate(-50%, -50%) scale(var(--s)); transform-origin: center; -webkit-tap-highlight-color: transparent; }
 .district-arrive .facility { animation: facility-arrive .38s both; animation-delay: calc(var(--i) * 14ms); }
-.facility-model { position: absolute; z-index: 1; left: 50%; top: 0; width: 58px; height: 47px; display: grid; place-items: center; transform: translateX(-50%); border: 3px solid var(--ink); border-radius: 50% 50% 7px 7px; background: repeating-linear-gradient(90deg, #fff4bd 0 9px, var(--yellow) 9px 18px); box-shadow: 4px 5px 0 rgba(6,47,61,.48); transform-origin: 50% 100%; }
+.facility::after { content: ''; position: absolute; z-index: 0; inset: 7px 5px 22px; border: 2px dashed rgba(255,255,255,.72); border-radius: 48% 52% 42% 58%; opacity: .3; transition: opacity .2s, transform .24s; }
+.facility-plot { position: absolute; z-index: 1; left: 50%; top: 4px; width: 138px; height: 70px; transform: translateX(-50%); border: 3px solid rgba(6,47,61,.9); border-radius: 48% 52% 44% 56% / 56% 45% 55% 44%; background: color-mix(in srgb, var(--facility-light) 44%, rgba(255,255,255,.7)); box-shadow: inset 0 -8px 0 rgba(6,47,61,.11), 4px 5px 0 rgba(6,47,61,.34); transition: filter .2s, transform .22s, box-shadow .22s; }
+.facility-building { position: absolute; left: 34px; right: 29px; bottom: 8px; height: 31px; border: 3px solid var(--ink); border-radius: 5px 5px 10px 10px; background: repeating-linear-gradient(90deg, #fff5bd 0 14px, var(--facility-light) 14px 28px); box-shadow: inset 0 -7px 0 rgba(6,47,61,.12); }
+.facility-building > i { position: absolute; bottom: 7px; width: 9px; height: 11px; border: 2px solid var(--ink); background: #7de3f3; box-shadow: inset 0 0 0 2px rgba(255,255,255,.65); }
+.facility-building > i:nth-child(1) { left: 8px; }
+.facility-building > i:nth-child(2) { left: calc(50% - 5px); background: #fff3a5; }
+.facility-building > i:nth-child(3) { right: 8px; }
+.facility-roof { position: absolute; z-index: 2; left: 43px; top: 12px; width: 65px; height: 24px; border: 3px solid var(--ink); background: var(--facility-accent); clip-path: polygon(50% 0, 100% 100%, 0 100%); filter: drop-shadow(3px 3px 0 rgba(6,47,61,.24)); }
+.facility-flag { position: absolute; z-index: 3; left: 75px; top: 3px; width: 3px; height: 19px; background: var(--ink); transform-origin: bottom; }
+.facility-flag::after { content: ''; position: absolute; left: 3px; top: 0; width: 16px; height: 10px; border: 2px solid var(--ink); background: var(--facility-light); clip-path: polygon(0 0,100% 20%,77% 100%,0 83%); }
+.facility-particles { position: absolute; z-index: 5; left: 50%; top: 42px; width: 1px; height: 1px; pointer-events: none; }
+.facility-particles i { position: absolute; width: 7px; height: 7px; border: 2px solid var(--ink); border-radius: 50%; background: var(--facility-light); opacity: 0; transform: rotate(var(--angle)) translateX(14px) scale(.25); box-shadow: 0 0 0 2px rgba(255,255,255,.65); }
+.facility-model { position: absolute; z-index: 4; left: 50%; top: 9px; width: 50px; height: 42px; display: grid; place-items: center; transform: translateX(-50%); border: 3px solid var(--ink); border-radius: 50% 50% 7px 7px; background: repeating-linear-gradient(90deg, #fff4bd 0 9px, var(--yellow) 9px 18px); box-shadow: 3px 4px 0 rgba(6,47,61,.42); transform-origin: 50% 100%; }
 .facility-model::before { content: ''; position: absolute; left: 6px; right: 6px; bottom: -9px; height: 11px; border: 3px solid var(--ink); background: var(--red); }
-.facility-model > span { position: relative; z-index: 2; font-family: "Apple Color Emoji", "Segoe UI Emoji", sans-serif; font-size: 25px; line-height: 1; filter: drop-shadow(1px 2px 0 white); }
+.facility-model > span { position: relative; z-index: 2; font-family: "Apple Color Emoji", "Segoe UI Emoji", sans-serif; font-size: 22px; line-height: 1; filter: drop-shadow(1px 2px 0 white); }
 .facility-sign { position: absolute; z-index: 3; left: 50%; bottom: 0; width: min(100%, 158px); min-height: 35px; display: flex; align-items: stretch; transform: translateX(-50%); border: 3px solid var(--ink); background: var(--cream); box-shadow: inset 0 0 0 2px white, 4px 5px 0 rgba(6,47,61,.55); transition: transform .18s, filter .18s; }
 .facility-sign b { min-width: 34px; display: grid; place-items: center; padding: 6px 5px; background: var(--red); color: white; font-size: 11px; }
 .facility-sign span { min-width: 0; display: grid; place-items: center start; overflow: hidden; padding: 6px 7px; font-size: 10px; font-weight: 900; line-height: 1.15; text-overflow: ellipsis; white-space: nowrap; }
-.facility:hover .facility-sign, .facility:focus-visible .facility-sign, .facility.is-selected .facility-sign { transform: translateX(-50%) translateY(-5px); filter: saturate(1.16); }
-.facility:hover .facility-model, .facility:focus-visible .facility-model, .facility.is-selected .facility-model { filter: brightness(1.1) saturate(1.15); }
+.facility:hover::after, .facility:focus-visible::after, .facility.is-selected::after { opacity: .94; transform: scale(1.05) rotate(-1deg); }
+.facility:hover .facility-plot, .facility:focus-visible .facility-plot, .facility.is-selected .facility-plot { filter: brightness(1.1) saturate(1.2); transform: translateX(-50%) translateY(-3px) scale(1.04); box-shadow: inset 0 -8px 0 rgba(6,47,61,.08), 0 0 0 5px rgba(255,244,164,.5), 5px 7px 0 rgba(6,47,61,.38); }
+.facility:hover .facility-flag, .facility:focus-visible .facility-flag, .facility.is-selected .facility-flag { animation: facility-flag-wave .55s ease-in-out infinite alternate; }
+.facility:hover .facility-particles i, .facility:focus-visible .facility-particles i, .facility.is-selected .facility-particles i { animation: facility-particle .72s cubic-bezier(.15,.72,.24,1) infinite; animation-delay: var(--delay); }
+.facility:hover .facility-sign, .facility:focus-visible .facility-sign, .facility.is-selected .facility-sign { transform: translateX(-50%) translateY(-7px); filter: saturate(1.16); }
+.facility:hover .facility-model, .facility:focus-visible .facility-model, .facility.is-selected .facility-model { filter: brightness(1.13) saturate(1.2); }
+.facility:focus-visible { outline: 4px solid white; outline-offset: 3px; border-radius: 38% 45% 32% 48%; }
 .facility.is-selected .facility-sign { background: var(--yellow); box-shadow: inset 0 0 0 2px #fff3a0, 5px 6px 0 var(--ink); }
+
+.facility--studio, .facility--workshop { --facility-accent: #e8533a; --facility-light: #ffd245; }
+.facility--spin, .facility--boat { --facility-accent: #258ec2; --facility-light: #72dcf0; }
+.facility--ride, .facility--train, .facility--parade { --facility-accent: #ee5c36; --facility-light: #ffbd49; }
+.facility--tower, .facility--maze { --facility-accent: #3d9e67; --facility-light: #98dc65; }
+.facility--stage, .facility--game { --facility-accent: #db4534; --facility-light: #ff8a52; }
+.facility--balloon, .facility--icecream { --facility-accent: #f05c79; --facility-light: #ffb6cf; }
+.facility--glasses, .facility--stall, .facility--gift { --facility-accent: #278fb3; --facility-light: #83dce6; }
 
 .facility--spin .facility-model { border-radius: 50%; background: #73c9e6; animation: attraction-spin 5s linear infinite; }
 .facility--ride .facility-model { border-radius: 28px 28px 8px 8px; background: #ff8c52; animation: attraction-swing 2.2s ease-in-out infinite; }
@@ -266,6 +291,13 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
 @keyframes boat-bob { 0%,100% { transform: translateX(-50%) translateY(1px) rotate(-2deg); } 50% { transform: translateX(-50%) translateY(-4px) rotate(2deg); } }
 @keyframes game-pop { 0%,100% { transform: translateX(-50%) scale(.94); } 50% { transform: translateX(-50%) scale(1.05); } }
 @keyframes maze-breathe { 0%,100% { transform: translateX(-50%) scale(.96); } 50% { transform: translateX(-50%) scale(1.03); } }
+@keyframes facility-particle {
+  0% { opacity: 0; transform: rotate(var(--angle)) translateX(10px) scale(.2); }
+  24% { opacity: 1; }
+  72% { opacity: .9; transform: rotate(var(--angle)) translateX(var(--distance)) scale(1); }
+  100% { opacity: 0; transform: rotate(var(--angle)) translateX(calc(var(--distance) + 12px)) scale(.35); }
+}
+@keyframes facility-flag-wave { from { transform: rotate(-7deg); } to { transform: rotate(8deg); } }
 @keyframes facility-arrive { from { opacity: 0; filter: blur(3px); } to { opacity: 1; filter: blur(0); } }
 @keyframes environment-arrive { from { opacity: .35; transform: scale(1.035); filter: blur(5px) saturate(.8); } to { opacity: 1; transform: scale(1); } }
 
@@ -277,7 +309,9 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
   .park-status { display: none; }
   .zone-banner { width: min(450px, calc(100% - 285px)); }
   .district-switcher { right: 10px; width: 260px; }
-  .facility { width: 150px; transform: translate(-50%, -50%) scale(var(--s)); }
+  .facility { width: 170px; transform: translate(-50%, -50%) scale(var(--s)); }
+  .facility-plot { width: 126px; }
+  .facility-building { left: 31px; right: 27px; }
   .detail-drawer { width: min(520px, calc(100vw - 314px)); }
 }
 
@@ -314,7 +348,11 @@ button:focus-visible, a:focus-visible { outline: 4px solid white; box-shadow: 0 
   .district-link small { display: none; }
   .district-center { display: none; }
   .facility-layer { inset: 220px 0 76px; }
-  .facility { left: var(--mx); top: var(--my); width: 154px; transform: translate(-50%, -50%) scale(var(--s)); }
+  .facility { left: var(--mx); top: var(--my); width: 160px; height: 104px; transform: translate(-50%, -50%) scale(var(--s)); }
+  .facility-plot { width: 118px; height: 65px; }
+  .facility-building { left: 27px; right: 24px; height: 29px; }
+  .facility-roof { left: 36px; }
+  .facility-flag { left: 68px; }
   .facility-sign span { font-size: 9px; }
   .moving-visitor { width: 24px; height: 36px; }
   .swan { width: 52px; }
