@@ -115,8 +115,19 @@ function hotspotMarkup() {
   return current.map((item, index) => {
     const [kind, icon] = attractionFor(item)
     const [x, y, mx, my, scale] = districtLayouts[state.category][index]
+    const particles = Array.from({length: 10}, (_, particleIndex) => {
+      const angle = particleIndex * 36
+      const distance = 38 + (particleIndex % 3) * 9
+      return `<i style="--angle:${angle}deg;--distance:${distance}px;--delay:${particleIndex * 28}ms"></i>`
+    }).join('')
     return `
     <button class="facility facility--${kind} ${state.project?.id === item.id ? 'is-selected' : ''}" style="--i:${index};--x:${x}%;--y:${y}%;--mx:${mx}%;--my:${my}%;--s:${scale}" data-project="${item.id}" aria-label="打开项目：${item.title}，设施：${item.facility}">
+      <span class="facility-plot" aria-hidden="true">
+        <span class="facility-building"><i></i><i></i><i></i></span>
+        <span class="facility-roof"></span>
+        <span class="facility-flag"></span>
+      </span>
+      <span class="facility-particles" aria-hidden="true">${particles}</span>
       <span class="facility-model" aria-hidden="true"><span>${icon}</span></span>
       <span class="facility-sign"><b>${String(index + 1).padStart(2, '0')}</b><span>${item.facility}</span></span>
     </button>`
@@ -195,7 +206,7 @@ app.innerHTML = `
         <img src="${swanSprite}" class="swan swan--one" alt="">
         <img src="${swanSprite}" class="swan swan--two" alt="">
       </div>
-      <div class="map-help"><span>游园方法</span><b>左侧选分区 → 点击设施 → 复制提示词给 Agent</b></div>
+      <div class="map-help"><span>游园方法</span><b>划过整座设施看能量 → 点击建筑 → 复制提示词给 Agent</b></div>
     </section>
 
     <aside class="detail-drawer is-open" data-drawer aria-live="polite">
