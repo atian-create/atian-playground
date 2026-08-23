@@ -6,10 +6,16 @@ A pixel-art amusement park that turns A Tian's real open-source Skills, websites
 
 ![A Tian Playground project map](docs/screenshots/playground-desktop.png)
 
+| North · Creative Garden Street | East · Media Carnival |
+| --- | --- |
+| ![North district](docs/screenshots/park-north.png) | ![East district](docs/screenshots/park-east.png) |
+| West · Knowledge Forest | South · Lakeside Game Island |
+| ![West district](docs/screenshots/park-west.png) | ![South district](docs/screenshots/park-south.png) |
+
 ## What it does
 
-- Lists 48 verified public GitHub repositories across four switchable park pages: Visual North, Media East, Agent West, and Interactive South.
-- Each district uses a different map direction and an organic attraction layout, with a distinct project mark and animated facility for every repository.
+- Lists 48 verified public GitHub repositories inside one park with four distinct environments: Creative Garden Street, Media Carnival, Knowledge Forest, and Lakeside Game Island.
+- Every district has its own terrain, architecture, atmosphere, and organic attraction layout instead of reusing one map with a different title.
 - Groups them into Visual Creation, Creator Content, Agent & Knowledge, and Interactive Websites & Games.
 - Maps every project in the selected zone to a related animated amusement-park attraction.
 - Provides a three-step tutorial, GitHub link, and Agent launch prompt for each project.
