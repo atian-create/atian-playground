@@ -4,31 +4,81 @@ import swanSprite from './assets/swan-boat.png'
 import { agentPrompt, categories, openSourceAudit, projects } from './projects.js'
 
 const app = document.querySelector('#app')
-const state = { category: 'visual', project: projects[0], audit: false }
+const initialCategory = categories.some(category => category.id === location.hash.slice(1)) ? location.hash.slice(1) : 'visual'
+const state = { category: initialCategory, project: projects.find(item => item.category === initialCategory), audit: false }
+
+const districts = {
+  visual: { direction: '北园区', short: '北 · 做图', scene: '灵感造物园' },
+  media: { direction: '东园区', short: '东 · 内容', scene: '内容巡游园' },
+  agent: { direction: '西园区', short: '西 · Agent', scene: '知识探索园' },
+  interactive: { direction: '南园区', short: '南 · 互动', scene: '游戏体验园' },
+}
+
+const districtLayouts = {
+  visual: [
+    [10,28,22,7,.92],[31,12,70,14,1],[57,22,30,25,.9],[82,12,76,34,.98],[90,40,46,44,.88],
+    [69,48,20,53,.95],[43,38,71,61,.9],[18,52,35,70,.92],[34,75,78,80,.96],[72,78,45,91,.92],
+  ],
+  media: [
+    [7,12,22,4,.9],[29,7,72,9,.96],[50,14,31,14,.92],[72,6,78,19,.88],[93,17,48,24,.92],
+    [12,37,17,30,.9],[34,31,67,35,.94],[55,40,31,40,.9],[77,33,80,46,.94],[93,43,48,51,.88],
+    [6,62,19,56,.92],[28,57,70,61,.9],[51,65,34,66,.94],[73,58,81,71,.9],[92,68,51,76,.88],
+    [13,88,20,82,.92],[38,82,69,87,.9],[64,91,35,92,.94],[88,91,79,97,.9],
+  ],
+  agent: [
+    [14,22,25,12,.96],[40,10,72,25,.9],[72,24,34,39,1],[84,56,75,54,.92],[56,70,25,70,.96],[24,78,65,85,.9],
+  ],
+  interactive: [
+    [8,16,22,6,.92],[35,8,72,14,.98],[63,18,30,22,.9],[90,9,74,31,.95],
+    [17,41,45,40,.88],[48,34,20,49,.96],[78,44,72,57,.9],
+    [8,67,30,66,.94],[37,61,75,74,.9],[68,70,45,82,.96],[94,63,20,90,.9],
+    [28,91,70,95,.94],[82,94,43,98,.9],
+  ],
+}
+
+const projectMarks = {
+  'food-sticker-demo': '🍦', 'knowledge-card-journal-skill': '📚', 'solo-ai-paper-collage': '✂️',
+  'codex-dream-skin-studio': '🎨', 'handdrawn-route-map-card-skill': '🗺️', 'wechat-article-image-pack-skill': '🖼️',
+  'xhs-cover-lab-open-skill': '🪧', 'food-recipe-flowchart-skill': '🍳', 'wechat-knowledge-infographic-cover-skill': '📊',
+  'ip-persona-sticker-card-grid-skill': '🧸', 'voice-expression-workbench': '🎙️', 'lingzao-skill': '🔭',
+  'xhs-profile-breakdown-skill': '👓', 'weekly-content-motherpack-distributor': '🎡', 'xhs-keyword-design-skill': '🎯',
+  'xhs-benchmark-account-finder-skill': '🧭', 'multi-platform-publishing-tracker': '🚦', 'xhs-postpublish-review-skill': '📈',
+  'xhs-prepublish-check-skill': '✅', 'xhs-keyword-to-content-package-skill': '🎢', 'benchmark-copy-rewrite-skill': '🪞',
+  'benchmark-topic-radar-skill': '📡', 'topic-title-clarity-check-skill': '🏀', 'content-system-map-skill': '🧩',
+  'multi-platform-publishing-tracker-skill': '🚂', 'single-note-breakdown-skill': '🔬', 'xhs-account-diagnosis-open-skill': '🩺',
+  'xhs-title-planner-skill': '🎈', 'full-web-sync-open-skill': '📣', 'desktop-pet-replica': '🤖',
+  'tuyu-language-notebook': '🌍', 'agent-knowledge-space': '🌌', 'content-graph-builder-skill': '🕸️',
+  'codex-thread-console': '🗼', 'interactive-rhythm-calendar': '🗓️', 'atian-playground': '🎟️',
+  'penang-foodmap-demo': '⛵', 'air-magic-book-demo': '📖', 'gesture-curtain-demo': '🎭',
+  'particle-music-box-demo': '🎵', 'wordpop-junior-english': '🔤', 'quiz-site-builder-skill': '🧠',
+  'gesture-music-grid-demo': '🍓', 'air-fruit-slicer-demo': '🍉', 'opc-test': '🧑‍💼',
+  'bangkok-michelin-map': '🍜', 'cute-stickers': '🐻', 'my-ai-web': '🕹️',
+}
 
 const attractionOverrides = {
-  'food-sticker-demo': ['icecream', '🍦'],
-  'xhs-profile-breakdown-skill': ['glasses', '👓'],
-  'xhs-title-planner-skill': ['balloon', '🎈'],
-  'ip-persona-sticker-card-grid-skill': ['gift', '🎁'],
-  'penang-foodmap-demo': ['boat', '⛵'],
-  'desktop-pet-replica': ['parade', '🤖'],
+  'food-sticker-demo': 'icecream',
+  'xhs-profile-breakdown-skill': 'glasses',
+  'xhs-title-planner-skill': 'balloon',
+  'ip-persona-sticker-card-grid-skill': 'gift',
+  'penang-foodmap-demo': 'boat',
+  'desktop-pet-replica': 'parade',
 }
 
 function attractionFor(item) {
-  if (attractionOverrides[item.id]) return attractionOverrides[item.id]
+  const icon = projectMarks[item.id] || '🎪'
+  if (attractionOverrides[item.id]) return [attractionOverrides[item.id], icon]
   const name = `${item.title}${item.facility}`
-  if (/照相|封面|画廊|海报|贴纸|拼贴|配图/.test(name)) return ['studio', '📷']
-  if (/火车|观光车|穿梭/.test(name)) return ['train', '🚂']
-  if (/摩天轮|转盘|旋转木马|飞椅/.test(name)) return ['spin', '🎡']
-  if (/过山车|大摆锤|飞船|回旋镖/.test(name)) return ['ride', '🎢']
-  if (/剧场|舞台|广播|音乐/.test(name)) return ['stage', '🎭']
-  if (/迷宫|知识空间|图谱/.test(name)) return ['maze', '🌿']
-  if (/塔|雷达|总站|中心|检查/.test(name)) return ['tower', '📡']
-  if (/水上|漂流|船/.test(name)) return ['boat', '🦢']
-  if (/游戏|街机|弹跳|投篮|碰碰车/.test(name)) return ['game', '🎮']
-  if (/工坊|实验|工作室|训练/.test(name)) return ['workshop', '🛠️']
-  return ['stall', '🎪']
+  if (/照相|封面|画廊|海报|贴纸|拼贴|配图/.test(name)) return ['studio', icon]
+  if (/火车|观光车|穿梭/.test(name)) return ['train', icon]
+  if (/摩天轮|转盘|旋转木马|飞椅/.test(name)) return ['spin', icon]
+  if (/过山车|大摆锤|飞船|回旋镖/.test(name)) return ['ride', icon]
+  if (/剧场|舞台|广播|音乐/.test(name)) return ['stage', icon]
+  if (/迷宫|知识空间|图谱/.test(name)) return ['maze', icon]
+  if (/塔|雷达|总站|中心|检查/.test(name)) return ['tower', icon]
+  if (/水上|漂流|船/.test(name)) return ['boat', icon]
+  if (/游戏|街机|弹跳|投篮|碰碰车/.test(name)) return ['game', icon]
+  if (/工坊|实验|工作室|训练/.test(name)) return ['workshop', icon]
+  return ['stall', icon]
 }
 
 const categoryCount = id => projects.filter(project => project.category === id).length
@@ -60,12 +110,21 @@ function hotspotMarkup() {
   const current = projects.filter(project => project.category === state.category)
   return current.map((item, index) => {
     const [kind, icon] = attractionFor(item)
+    const [x, y, mx, my, scale] = districtLayouts[state.category][index]
     return `
-    <button class="facility facility--${kind} ${state.project?.id === item.id ? 'is-selected' : ''}" style="--i:${index}" data-project="${item.id}" aria-label="打开项目：${item.title}，设施：${item.facility}">
+    <button class="facility facility--${kind} ${state.project?.id === item.id ? 'is-selected' : ''}" style="--i:${index};--x:${x}%;--y:${y}%;--mx:${mx}%;--my:${my}%;--s:${scale}" data-project="${item.id}" aria-label="打开项目：${item.title}，设施：${item.facility}">
       <span class="facility-model" aria-hidden="true"><span>${icon}</span></span>
       <span class="facility-sign"><b>${String(index + 1).padStart(2, '0')}</b><span>${item.facility}</span></span>
     </button>`
   }).join('')
+}
+
+function districtNavMarkup() {
+  return `
+    <nav class="district-switcher" aria-label="切换四个园区页面">
+      ${categories.map(category => `<button class="district-link district-link--${category.id} ${state.category === category.id ? 'is-current' : ''}" data-category="${category.id}" style="--district-color:${category.color}"><span>${districts[category.id].short}</span><small>${category.name}</small></button>`).join('')}
+      <span class="district-center"><b>四园区</b><small>点击换页</small></span>
+    </nav>`
 }
 
 function tutorialMarkup(item) {
@@ -112,7 +171,7 @@ app.innerHTML = `
       <button class="audit-button" data-audit><span>🚧</span><span><b>施工公告牌</b><small>还有哪些值得开源？</small></span></button>
     </aside>
 
-    <section class="park-map" id="park" aria-label="阿甜游乐园地图">
+    <section class="park-map" id="park" data-district="${state.category}" aria-label="阿甜游乐园地图">
       <div class="park-gate" aria-label="阿甜的 Skill 游乐园大门">
         <i class="gate-tower gate-tower--left"></i>
         <div><strong>阿甜的 Skill 游乐园</strong><small>ATIAN'S SKILL PARK</small></div>
@@ -120,9 +179,10 @@ app.innerHTML = `
       </div>
       <div class="zone-banner" style="--zone:${categoryById(state.category).color}">
         <span>${categoryById(state.category).icon}</span>
-        <div><b data-zone-name>${categoryById(state.category).name}</b><small data-zone-intro>${categoryById(state.category).intro}</small></div>
+        <div><em data-zone-direction>${districts[state.category].direction} · ${districts[state.category].scene}</em><b data-zone-name>${categoryById(state.category).name}</b><small data-zone-intro>${categoryById(state.category).intro}</small></div>
         <strong data-zone-count>${categoryCount(state.category)} 项</strong>
       </div>
+      <div data-district-switcher>${districtNavMarkup()}</div>
       <div class="facility-layer" data-facilities>${hotspotMarkup()}</div>
       <div class="moving-visitors" aria-hidden="true">
         ${Array.from({length: 10}, (_, index) => `<img src="${visitorSprite}" class="moving-visitor moving-visitor--${index + 1}" alt="" style="--delay:-${index * 3.1}s">`).join('')}
@@ -146,6 +206,8 @@ const sidebar = document.querySelector('[data-sidebar]')
 const facilities = document.querySelector('[data-facilities]')
 const drawer = document.querySelector('[data-drawer]')
 const detail = document.querySelector('[data-detail]')
+const parkMap = document.querySelector('.park-map')
+const districtSwitcher = document.querySelector('[data-district-switcher]')
 
 function renderDetail(open = true) {
   if (state.audit) {
@@ -169,12 +231,18 @@ function renderCategory() {
   sidebar.innerHTML = sidebarMarkup()
   sidebar.scrollTop = 0
   facilities.innerHTML = hotspotMarkup()
+  districtSwitcher.innerHTML = districtNavMarkup()
+  parkMap.dataset.district = category.id
+  parkMap.classList.remove('district-arrive')
+  requestAnimationFrame(() => parkMap.classList.add('district-arrive'))
   const banner = document.querySelector('.zone-banner')
   banner.style.setProperty('--zone', category.color)
   banner.querySelector('span').textContent = category.icon
   document.querySelector('[data-zone-name]').textContent = category.name
+  document.querySelector('[data-zone-direction]').textContent = `${districts[category.id].direction} · ${districts[category.id].scene}`
   document.querySelector('[data-zone-intro]').textContent = category.intro
   document.querySelector('[data-zone-count]').textContent = `${categoryCount(category.id)} 项`
+  document.title = `${districts[category.id].direction} · ${category.name}｜阿甜的 Skill 游乐园`
 }
 
 function selectProject(id) {
@@ -183,6 +251,7 @@ function selectProject(id) {
   state.project = item
   state.category = item.category
   state.audit = false
+  history.replaceState(null, '', `#${item.category}`)
   renderCategory()
   renderDetail()
 }
@@ -191,6 +260,7 @@ function selectCategory(id) {
   state.category = id
   state.project = projects.find(project => project.category === id)
   state.audit = false
+  history.replaceState(null, '', `#${id}`)
   renderCategory()
   renderDetail(false)
 }

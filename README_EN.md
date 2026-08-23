@@ -8,7 +8,8 @@ A pixel-art amusement park that turns A Tian's real open-source Skills, websites
 
 ## What it does
 
-- Lists 48 verified public GitHub repositories.
+- Lists 48 verified public GitHub repositories across four switchable park pages: Visual North, Media East, Agent West, and Interactive South.
+- Each district uses a different map direction and an organic attraction layout, with a distinct project mark and animated facility for every repository.
 - Groups them into Visual Creation, Creator Content, Agent & Knowledge, and Interactive Websites & Games.
 - Maps every project in the selected zone to a related animated amusement-park attraction.
 - Provides a three-step tutorial, GitHub link, and Agent launch prompt for each project.
