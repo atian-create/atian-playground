@@ -1,6 +1,10 @@
 import './style.css'
 import visitorSprite from './assets/visitor-walking.png'
 import swanSprite from './assets/swan-boat.png'
+import visualDistrict from './assets/district-visual-v2.webp'
+import mediaDistrict from './assets/district-media-v2.webp'
+import agentDistrict from './assets/district-agent-v2.webp'
+import interactiveDistrict from './assets/district-interactive-v2.webp'
 import { agentPrompt, categories, openSourceAudit, projects } from './projects.js'
 
 const app = document.querySelector('#app')
@@ -8,10 +12,10 @@ const initialCategory = categories.some(category => category.id === location.has
 const state = { category: initialCategory, project: projects.find(item => item.category === initialCategory), audit: false }
 
 const districts = {
-  visual: { direction: '北园区', short: '北 · 做图', scene: '灵感造物园' },
-  media: { direction: '东园区', short: '东 · 内容', scene: '内容巡游园' },
-  agent: { direction: '西园区', short: '西 · Agent', scene: '知识探索园' },
-  interactive: { direction: '南园区', short: '南 · 互动', scene: '游戏体验园' },
+  visual: { direction: '北园区', short: '北 · 做图', scene: '创作花园街', background: visualDistrict },
+  media: { direction: '东园区', short: '东 · 内容', scene: '媒体嘉年华', background: mediaDistrict },
+  agent: { direction: '西园区', short: '西 · Agent', scene: '知识森林', background: agentDistrict },
+  interactive: { direction: '南园区', short: '南 · 互动', scene: '湖畔游戏岛', background: interactiveDistrict },
 }
 
 const districtLayouts = {
@@ -31,7 +35,7 @@ const districtLayouts = {
   interactive: [
     [8,16,22,6,.92],[35,8,72,14,.98],[63,18,30,22,.9],[90,9,74,31,.95],
     [17,41,45,40,.88],[48,34,20,49,.96],[78,44,72,57,.9],
-    [8,67,30,66,.94],[37,61,75,74,.9],[68,70,45,82,.96],[94,63,20,90,.9],
+    [8,67,30,66,.94],[37,61,75,74,.9],[68,70,45,82,.96],[90,63,20,90,.9],
     [28,91,70,95,.94],[82,94,43,98,.9],
   ],
 }
@@ -123,7 +127,7 @@ function districtNavMarkup() {
   return `
     <nav class="district-switcher" aria-label="切换四个园区页面">
       ${categories.map(category => `<button class="district-link district-link--${category.id} ${state.category === category.id ? 'is-current' : ''}" data-category="${category.id}" style="--district-color:${category.color}"><span>${districts[category.id].short}</span><small>${category.name}</small></button>`).join('')}
-      <span class="district-center"><b>四园区</b><small>点击换页</small></span>
+      <span class="district-center"><b>园内地图</b><small>四境通行</small></span>
     </nav>`
 }
 
@@ -171,7 +175,7 @@ app.innerHTML = `
       <button class="audit-button" data-audit><span>🚧</span><span><b>施工公告牌</b><small>还有哪些值得开源？</small></span></button>
     </aside>
 
-    <section class="park-map" id="park" data-district="${state.category}" aria-label="阿甜游乐园地图">
+    <section class="park-map" id="park" data-district="${state.category}" style="--district-bg:url('${districts[state.category].background}')" aria-label="阿甜游乐园地图">
       <div class="park-gate" aria-label="阿甜的 Skill 游乐园大门">
         <i class="gate-tower gate-tower--left"></i>
         <div><strong>阿甜的 Skill 游乐园</strong><small>ATIAN'S SKILL PARK</small></div>
@@ -233,6 +237,7 @@ function renderCategory() {
   facilities.innerHTML = hotspotMarkup()
   districtSwitcher.innerHTML = districtNavMarkup()
   parkMap.dataset.district = category.id
+  parkMap.style.setProperty('--district-bg', `url('${districts[category.id].background}')`)
   parkMap.classList.remove('district-arrive')
   requestAnimationFrame(() => parkMap.classList.add('district-arrive'))
   const banner = document.querySelector('.zone-banner')
